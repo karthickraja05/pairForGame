@@ -1,6 +1,10 @@
 @extends('common')
 
 @section('main')
+	<div class="my-5">
+		<div class="text-center">
+			<h2>Add Player</h2>
+		</div>
 	<form action="{{ route('store_player') }}" method="post">
 		@csrf
 	  <div class="form-group">
@@ -16,4 +20,5 @@
 	  </div>
 	  <button type="submit" class="btn btn-primary">Add</button>
 	</form>
+	</div>
 @endsection

@@ -1,7 +1,23 @@
 @extends('common')
 
 @section('main')
-	<a href="{{ route('add_player') }}"><button type="button" class="btn btn-primary">Add</button></a>
+<style type="text/css">
+	.pagination{
+		justify-content: center;
+	}
+	.head_play h2{
+		float: left;
+	    position: relative;
+	    left: 50%;
+	    transform: translateX(-50%);
+	}
+</style>
+	<div class="main1 my-5">
+	<div class="head_play mb-3 w-100">
+		<h2>Players Table</h2>
+		<div class="float-right"><a href="{{ route('add_player') }}"><button type="button" class="btn btn-primary">Add</button></a></div>
+		
+	</div>
 	<table class="table">
 	  <thead>
 	    <tr>
@@ -23,8 +39,9 @@
 	      </td>
 	    </tr>
 	    @endforeach
-	  {!! $player_data->render() !!}
 	  </tbody>
 
 	</table>
+	  {!! $player_data->render() !!}
+	</div>
 @endsection

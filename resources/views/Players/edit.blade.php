@@ -1,6 +1,10 @@
 @extends('common')
 
 @section('main')
+	<div class="my-5">
+		<div class="text-center">
+			<h2>Edit Player</h2>
+		</div>
 	<form action="{{ route('update_player',['id' => $edit_player['_id'] ]) }}" method="post">
 		@csrf
 	  <div class="form-group">
@@ -16,4 +20,5 @@
 	  </div>
 	  <button type="submit" class="btn btn-primary">Update</button>
 	</form>
+	</div>
 @endsection
