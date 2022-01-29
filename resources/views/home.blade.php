@@ -9,7 +9,7 @@
         <a href="{{ route('players') }}"><button type="button" class="btn btn-primary">Player Management</button></a>
       </div>
       <div class="m-5">
-        <a href="{{ route('add_player') }}"><button type="button" class="btn btn-primary">Pairing Management</button></a>
+        <a href="{{ route('pairing') }}"><button type="button" class="btn btn-primary">Auto Pairing</button></a>
       </div>
 
       <div class="m-5">
