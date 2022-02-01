@@ -13,4 +13,13 @@ class LocalDB{
 		$this->updateDataValue();
 	}
 	
+	public function readFile(){
+		$data = file_get_contents($this->connection_json);
+		return json_decode($data,true);
+	}
+
+	public function updateDataValue(){
+		$this->data = $this->readFile();
+	}
+	
 }
