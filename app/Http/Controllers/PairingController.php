@@ -68,7 +68,14 @@ class PairingController extends Controller
         $players_list = $player->data;
 
         $paired_player_list = [];
+        $i = 0;
         while(true){
+
+            if($i === 3){
+                dd($players_list);
+                dd($paired_player_list);
+            }
+
             if(count($players_list) > 1){
                 $temp = array_slice($players_list, 1,count($player->data) - 1);
                 // dd($temp);
@@ -76,14 +83,18 @@ class PairingController extends Controller
                 $temp = $this->getUnPairedPlayer($players_list[0]['paired_players'],$temp);
                 // dd($temp);
                 $paired_player = $this->getPair($temp[1]);
-
+                
                 // Make Previous Empty if already paired with others
                 if($temp[0] == '0'){
                     $players_list[0]['paired_players'] = [];                    
                 }
-
+                if($i === 2){
+                    dd($temp);
+                }
                 $paired_player_list[] = [$players_list[0] , $paired_player[0]];
-                $players_list = $paired_player[1];
+                
+                // $players_list = $paired_player[1];
+                $players_list = array_merge($paired_player[1],$temp[2]);
                 
             }else if(count($players_list) == 1){
                 $paired_player_list[] = [$players_list[0] , ['_id' => '','name' => '' ,'status' => 1]];
@@ -91,9 +102,10 @@ class PairingController extends Controller
             }else{
                 break;
             }
+            $i++;
         }
         $temp = [];
-        
+        dd($paired_player_list);
         foreach ($paired_player_list as $value) {
             if($value[0]['_id'])
                 $temp[$value[0]['_id']] = $value[1]['_id'];
@@ -101,11 +113,11 @@ class PairingController extends Controller
             // if($value[1]['_id'])
             //     $temp[$value[1]['_id']] = $value[0]['_id'];
         }
-        dd($temp);
+        
         $players_list = $this->update_paired_players($paired_player_list);
         
         $this->updatePairedListToDB($players_list);
-
+        dd($temp);
         dd('sone');
 
     }
@@ -113,9 +125,12 @@ class PairingController extends Controller
     public function getUnPairedPlayer($ids,$players){
 
         $remain = [];
+        $reject = [];
         foreach($players as $player){
             if(array_search($player['_id'], $ids) === false){
                 $remain[] = $player;
+            }else{
+                $reject[] = $player;
             }
         }
         
@@ -123,11 +138,13 @@ class PairingController extends Controller
             return [
                 '0',
                 $players,
+                $reject,
             ];
         }else{
             return [
                 '1',
                 $remain,
+                $reject,
             ];
         }
     }
