@@ -17,16 +17,16 @@ class PlayerController extends Controller
     }
 
     public function Store(Request $request,Player $players){
-        $data = $players->data;
-
+        $data = $players->data ?: [];
+        
         $add = [
             '_id' => uniqid(),
             'name' => $request->name,
             'status' => $request->status,
+            'paired_players' => [],
         ];
         array_push($data, $add);
         $players->addData($data);
-
         return redirect('players')->with('Success','Added Successfully');
     }
 
