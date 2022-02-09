@@ -16,20 +16,23 @@
   <div class="head_play mb-3 w-100">
     <h2>Pairing Data</h2>
   </div>
+  <div class="row my-5">
+    <a href="{{ route('strict_pairing') }}"><button type="button" class="btn btn-primary">Strict Auto Pairing</button></a><br/>
+  </div>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Date</th>
-        <th scope="col">Action</th>
+        <th scope="col">View</th>
       </tr>
     </thead>
     <tbody>
-      @forelse ($paired_players as $paired_player)
+      @forelse ($paired_players as $key => $paired_player)
         <tr>
           <th scope="row">{{ $loop->iteration }}</th>
-          <td>{{ $paired_player[0] }}</td>
-          <td>{{ $paired_player[1] }}</td>
+          <td>{{ date('Y-m-d H:i:s',$key) }}</td>
+          <td><a href="{{ route('view_paired_data',['id' => $key]) }}"><button>View</button></a></td>
         </tr>
       @empty
         <tr>

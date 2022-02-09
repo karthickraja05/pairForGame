@@ -9,12 +9,8 @@ use App\Services\Pairing;
 class PairingController extends Controller
 {
     public function index(Player $player){
-        
         $paired_players = $this->auto_pair($player);
-
         return view('Pairing.index',compact('paired_players'));
-        
-
     }
 
     public function auto_pair($player){
@@ -53,14 +49,32 @@ class PairingController extends Controller
     }
 
 
-    public function pairing_data(){
-        $paired_players = [];
+    public function pairing_data(Pairing $pairing){
+
+        $paired_players = $pairing->data == null ? [] : $pairing->data;
+
         return view('Pairing.pairing_data',compact('paired_players'));
+    }
+
+    public function view_pairing_data(Pairing $pairing,$id){
+        $paired_players = $pairing->data == null ? [] : $pairing->data;
+        if(!isset($paired_players[$id])){
+            abort(404);
+        }
+        $paired_players = $paired_players[$id];
+        // dd($paired_players);
+        return view('Pairing.view_pairing_data',compact('paired_players'));
     }
 
     public function strict_pairing(Pairing $pairing,Player $player){
         $pair = $this->strict_pair($player,$pairing->data);
-        dd($pair);
+        
+        $data = $pairing->data == null ? [] : $pairing->data;
+
+        $data[strtotime(date('Y-m-d H:i:s'))] = $pair;
+
+        $pairing->addData($data);
+        return redirect()->route('pairing_data');
     }
 
     public function strict_pair($player,$data){
@@ -141,7 +155,7 @@ class PairingController extends Controller
         
         $this->updatePairedListToDB($players_list);
 
-        dd('ss');
+        return $paired_player_list;
     }
 
     public function getUniqueData($data){

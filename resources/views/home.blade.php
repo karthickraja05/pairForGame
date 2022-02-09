@@ -13,15 +13,15 @@
         <a href="{{ route('pairing') }}"><button type="button" class="btn btn-primary">Normal Auto Pairing</button></a>
       </div>
 
-      <div class="m-5">
+      <!-- <div class="m-5">
         <a href="{{ route('strict_pairing') }}"><button type="button" class="btn btn-primary">Strict Auto Pairing</button></a><br/>
         <span>
           <i>pair compare with previous pairing data. So, Max Avoid Same user come again.</i>
         </span>
-      </div>
+      </div> -->
 
       <div class="m-5">
-        <a href="{{ route('pairing_data') }}"><button type="button" class="btn btn-primary">Already Pairing Data</button></a><br/>
+        <a href="{{ route('pairing_data') }}"><button type="button" class="btn btn-primary">Pairing Data Management</button></a><br/>
       </div>
 
       <div class="m-5">

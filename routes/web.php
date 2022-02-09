@@ -22,4 +22,5 @@ Route::get('/delete_player/{id}',[PlayerController::class,'delete'])->name('dele
 Route::get('/pairing',[PairingController::class,'index'])->name('pairing');
 Route::get('/strict_pairing',[PairingController::class,'strict_pairing'])->name('strict_pairing');
 Route::get('/pairing_data',[PairingController::class,'pairing_data'])->name('pairing_data');
+Route::get('/view_paired_data/{id}',[PairingController::class,'view_pairing_data'])->name('view_paired_data');
 
