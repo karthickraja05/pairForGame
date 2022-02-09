@@ -24,3 +24,6 @@ Route::get('/strict_pairing',[PairingController::class,'strict_pairing'])->name(
 Route::get('/pairing_data',[PairingController::class,'pairing_data'])->name('pairing_data');
 Route::get('/view_paired_data/{id}',[PairingController::class,'view_pairing_data'])->name('view_paired_data');
 
+
+Route::get('/empty_player',[PairingController::class,'empty_player'])->name('empty_player');
+

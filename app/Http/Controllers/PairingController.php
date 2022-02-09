@@ -94,7 +94,7 @@ class PairingController extends Controller
 
             if(count($players_list) > 1){
                 $temp = array_slice($players_list, 1,count($player->data) - 1);
-                // dd($temp);
+                
 
                 $temp = $this->getUnPairedPlayer($players_list[0]['paired_players'],$temp);
                 
@@ -121,6 +121,7 @@ class PairingController extends Controller
                 $temp[1]  - Paired
                 $temp[2]  - reject
                 */
+                
                 $paired_player_list[] = [$players_list[0] , $paired_player[0]];
                     
                 // if($i == '0'){
@@ -252,7 +253,14 @@ class PairingController extends Controller
         $player_obj->addData($update_list);
     }
 
+    public function empty_player(Player $player){
+        $data = $player->data;
 
+        foreach($data as $key => $value){
+            $data[$key]['paired_players'] = []; 
+        }
+        $player->addData($data);
+    }
     
 
 }
