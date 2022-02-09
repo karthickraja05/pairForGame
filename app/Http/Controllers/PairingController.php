@@ -69,32 +69,55 @@ class PairingController extends Controller
 
         $paired_player_list = [];
         $i = 0;
+        // dd($players_list);
         while(true){
 
-            if($i === 3){
-                dd($players_list);
-                dd($paired_player_list);
-            }
+            // if($i === 3){
+            //     dd('ss');
+            //     dd($players_list);
+            //     dd($paired_player_list);
+            // }
 
             if(count($players_list) > 1){
                 $temp = array_slice($players_list, 1,count($player->data) - 1);
                 // dd($temp);
 
                 $temp = $this->getUnPairedPlayer($players_list[0]['paired_players'],$temp);
-                // dd($temp);
-                $paired_player = $this->getPair($temp[1]);
                 
                 // Make Previous Empty if already paired with others
                 if($temp[0] == '0'){
                     $players_list[0]['paired_players'] = [];                    
+                    $temp[1] = $temp[2];
+                    $temp[2] = [];
                 }
-                if($i === 2){
-                    dd($temp);
-                }
-                $paired_player_list[] = [$players_list[0] , $paired_player[0]];
+
+                $paired_player = $this->getPair($temp[1]);
                 
+                if($i === 0){
+                    // dd($paired_player);
+                    // dd($players_list);
+                    // dd($paired_player_list);
+                    // dd($paired_player_list,$players_list[0],$temp);
+                    // dd($temp);
+                }
+
+
+                /*
+                $temp[0]  - Status
+                $temp[1]  - Paired
+                $temp[2]  - reject
+                */
+                $paired_player_list[] = [$players_list[0] , $paired_player[0]];
+                    
+                // if($i == '0'){
+                //     dd($temp[2]);
+                //     dd($this->getUniqueData())
+                //     dd();
+                // }
+
+                $dup_temp = array_merge($paired_player[1],$temp[2]);
                 // $players_list = $paired_player[1];
-                $players_list = array_merge($paired_player[1],$temp[2]);
+                $players_list = $this->getUniqueData($dup_temp);
                 
             }else if(count($players_list) == 1){
                 $paired_player_list[] = [$players_list[0] , ['_id' => '','name' => '' ,'status' => 1]];
@@ -105,7 +128,7 @@ class PairingController extends Controller
             $i++;
         }
         $temp = [];
-        dd($paired_player_list);
+        
         foreach ($paired_player_list as $value) {
             if($value[0]['_id'])
                 $temp[$value[0]['_id']] = $value[1]['_id'];
@@ -117,8 +140,22 @@ class PairingController extends Controller
         $players_list = $this->update_paired_players($paired_player_list);
         
         $this->updatePairedListToDB($players_list);
-        dd($temp);
-        dd('sone');
+
+        dd('ss');
+    }
+
+    public function getUniqueData($data){
+        $result = [];
+        $id = [];
+
+        foreach ($data as $value) {
+            if(array_search($value['_id'], $id) === false){
+                $result[] = $value;
+                $id[] = $value['_id'];
+            }
+        }
+
+        return $result;
 
     }
 
@@ -137,7 +174,7 @@ class PairingController extends Controller
         if(count($remain) === 0){
             return [
                 '0',
-                $players,
+                $remain, 
                 $reject,
             ];
         }else{
@@ -163,8 +200,14 @@ class PairingController extends Controller
         $update_list = [];
         foreach($paired_player_list as $board){
             if($board[0]['_id'] && $board[1]['_id']){
-                $board[0]['paired_players'][] = $board[1]['_id'];
-                $board[1]['paired_players'][] = $board[0]['_id'];
+                
+                if(array_search($board[1]['_id'], $board[0]['paired_players']) === false)
+                    $board[0]['paired_players'][] = $board[1]['_id'];
+
+                if(array_search($board[0]['_id'], $board[1]['paired_players']) === false)
+                    $board[1]['paired_players'][] = $board[0]['_id'];
+
+                
                 $update_list[$board[0]['_id']] = $board[0];
                 $update_list[$board[1]['_id']] = $board[1];
             }else if($board[0]['_id']){
@@ -196,5 +239,6 @@ class PairingController extends Controller
     }
 
 
+    
 
 }
