@@ -62,11 +62,11 @@ class PairingController extends Controller
             abort(404);
         }
         $paired_players = $paired_players[$id];
-        // dd($paired_players);
         return view('Pairing.view_pairing_data',compact('paired_players'));
     }
 
     public function strict_pairing(Pairing $pairing,Player $player){
+
         $pair = $this->strict_pair($player,$pairing->data);
         
         $data = $pairing->data == null ? [] : $pairing->data;
@@ -77,9 +77,22 @@ class PairingController extends Controller
         return redirect()->route('pairing_data');
     }
 
+    public function getActive($data){
+        $active = [];
+
+        foreach ($data as $value) {
+            if($value['status'] == '1'){
+                $active[] = $value;
+            }
+        }
+        
+        return $active;
+    }
+
+
     public function strict_pair($player,$data){
         $data = $data == null ? [] : $data;
-        $players_list = $player->data;
+        $players_list = $this->getActive($player->data);
 
         $paired_player_list = [];
         $i = 0;

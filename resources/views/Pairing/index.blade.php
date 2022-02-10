@@ -2,41 +2,51 @@
 
 @section('main')
 <style type="text/css">
-  .pagination{
-    justify-content: center;
+  td,th{
+    padding: 0.40rem !important;
   }
-  .head_play h2{
-    float: left;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
+  th.player{
+    width: 30%;
   }
 </style>
-  <div class="main1 my-5">
-  <div class="head_play mb-3 w-100">
-    <h2>Pairing Players</h2>
-  </div>
-  <table class="table">
+<div class="my-5">
+  <table class="table table-bordered">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Player1</th>
-        <th scope="col">Player2</th>
+        <th>#</th>
+        <th class="player">Players Name</th>
+        <th>Next Round</th>
+        <th>Next Round</th>
       </tr>
     </thead>
     <tbody>
-      @forelse ($paired_players as $paired_player)
-        <tr>
-          <th scope="row">{{ $loop->iteration }}</th>
-          <td>{{ $paired_player[0] }}</td>
-          <td>{{ $paired_player[1] }}</td>
-        </tr>
+      @php
+      $i = 1;
+      @endphp
+      @forelse($paired_players as $players)
+      <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td class="player">{{$players[0]}} , {{$players[1]}} </td>
+        @if($loop->odd)
+        <td rowspan="2"></td>
+          @if($i == 1)
+            <td rowspan="4"></td>
+          @endif
+        @endif
+      </tr>
+      @php 
+        if($i == 4){
+          $i = 0;
+        }
+        $i++;
+      @endphp
       @empty
-        <tr>
-          <td colspan="3">No Players Found For Pairing</td>
-        </tr>
+      <tr>
+        <td colspan="4"></td>
+      </tr>
       @endforelse
+      
     </tbody>
   </table>
-  </div>
+</div>
 @endsection
