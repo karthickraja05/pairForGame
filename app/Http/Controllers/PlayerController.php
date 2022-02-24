@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class PlayerController extends Controller
 {
     public function index(Player $players){
-        $player_data = $this->paginate($players->data,25);
+        $player_data = $this->paginate($players->data,150);
         return view('Players.index',compact('player_data'));
     }
 

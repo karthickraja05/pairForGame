@@ -96,7 +96,8 @@ class PairingController extends Controller
 
         $paired_player_list = [];
         $i = 0;
-        // dd($players_list);
+        shuffle($players_list);
+        
         while(true){
 
             // if($i === 3){
@@ -106,6 +107,9 @@ class PairingController extends Controller
             // }
 
             if(count($players_list) > 1){
+
+                shuffle($players_list);
+
                 $temp = array_slice($players_list, 1,count($player->data) - 1);
                 
 
